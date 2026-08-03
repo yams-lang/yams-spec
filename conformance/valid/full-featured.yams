@@ -1,0 +1,30 @@
+schema: yams/1
+catalog: example/1
+name: full-featured
+
+# Exercises the broad surface: object-form params, both node flags, and every
+# deprecated connection field (atten / offset / polarity / curve / enabled).
+# Round-trip tests use it to prove the serializer preserves every field
+# losslessly -- including the ones a runtime must ignore.
+
+nodes:
+  a:     { type: emit,  params: { value: 0.8 } }
+  b:     { type: emit,  params: { value: 0.2 } }
+  fan:   { type: split }
+  mix:   { type: merge }
+  lim:   { type: clamp, params: { min: -0.5, max: 0.5 } }
+  trim:  { type: scale, params: { factor: { value: 0.9, min: 0, max: 4, unit: ratio } } }
+  muted: { type: scale, params: { factor: 0.1 }, enabled: false }
+  byp:   { type: clamp, params: { max: 0.3 }, bypass: true }
+  out:   { type: collect }
+
+connections:
+  - { from: a.out,     to: fan.in }
+  - { from: fan.left,  to: mix.a }
+  - { from: fan.right, to: lim.in }
+  - { from: b.out,     to: mix.b, atten: 0.9, curve: lin, enabled: true }
+  - { from: lim.out,   to: trim.factor, atten: 0.8, offset: 1200, polarity: uni, curve: exp }
+  - { from: mix.out,   to: trim.in, atten: 0.3, offset: 0, polarity: bi, curve: log }
+  - { from: trim.out,  to: muted.in }
+  - { from: muted.out, to: byp.in }
+  - { from: byp.out,   to: out.in }

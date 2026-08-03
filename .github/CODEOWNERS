@@ -1,0 +1,7 @@
+# Default owner for everything in this repository.
+* @klxsnd
+
+# The specification and the conformance suite define the format itself:
+# a change to either is a change to what "valid YAMS" means.
+/spec/          @klxsnd
+/conformance/   @klxsnd

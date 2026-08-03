@@ -1,0 +1,8 @@
+schema: yams/1
+
+nodes:
+  a: { type: passthrough, params: { enabled: yes } }
+  b: { type: passthrough }
+
+connections:
+  - { from: a.out, to: b.in }

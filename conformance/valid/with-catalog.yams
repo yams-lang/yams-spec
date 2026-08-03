@@ -1,0 +1,19 @@
+schema: yams/1
+catalog: example/1
+name: with-catalog
+
+nodes:
+  src: { type: emit, params: { value: 0.8 } }
+  lim:
+    type: clamp
+    params:
+      max: { value: 1200, min: 20, max: 20000, curve: exp, unit: hz }
+      min: 0.7
+  out: { type: collect }
+
+connections:
+  - { from: src.out, to: lim.in,  atten: 0.8 }
+  - { from: lim.out, to: out.in }
+
+controls:
+  - { name: 'Ceiling', target: lim.max, min: 20, max: 20000, curve: exp }

@@ -1,0 +1,7 @@
+schema: yams/1
+
+nodes:
+  a: { type: passthrough }
+
+connections:
+  - { from: ghost.out, to: a.in }

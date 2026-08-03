@@ -1,0 +1,64 @@
+{
+  "$comment": "YAMS conformance suite. Every implementation should produce the stated outcome for every case. Paths are relative to this file.",
+  "schema": "yams-conformance/1",
+  "cases": [
+    {
+      "file": "valid/minimal.yams",
+      "expect": "accept",
+      "exercises": "The smallest well-formed document: schema, nodes, connections. No catalog declared.",
+      "spec": "Top-Level Structure"
+    },
+    {
+      "file": "valid/with-catalog.yams",
+      "expect": "accept",
+      "exercises": "A document declaring a catalog and a name, with params on nodes. Also covers unknown-key handling: the object-form param carries a `curve` key the specification does not define, which a reader must ignore and a writer must preserve on round-trip.",
+      "spec": "Top-Level Structure"
+    },
+    {
+      "file": "valid/full-featured.yams",
+      "expect": "accept",
+      "exercises": "Broad surface \u2014 the round-trip case. Parse, re-serialise, re-parse, and the two parses must be equal.",
+      "spec": "Top-Level Structure"
+    },
+    {
+      "file": "invalid/tabs.yams",
+      "expect": "reject",
+      "rule": "no-tabs",
+      "stage": "safe-yams",
+      "exercises": "Tab characters used for indentation. YAML forbids tabs in indentation; Safe YAMS rejects them outright rather than relying on the YAML parser's error.",
+      "spec": "Safe YAMS"
+    },
+    {
+      "file": "invalid/anchor.yams",
+      "expect": "reject",
+      "rule": "no-anchors-or-aliases",
+      "stage": "safe-yams",
+      "exercises": "A YAML anchor (&anchor). Anchors and aliases are excluded from the Safe YAMS subset \u2014 they let one document expand unboundedly and defeat diff-readability.",
+      "spec": "Safe YAMS"
+    },
+    {
+      "file": "invalid/old-bool.yams",
+      "expect": "reject",
+      "rule": "lowercase-bools",
+      "stage": "safe-yams",
+      "exercises": "YAML 1.1 boolean spelling (yes). Safe YAMS admits only true/false, so a value like `yes` or `on` is never silently coerced to a boolean.",
+      "spec": "Safe YAMS"
+    },
+    {
+      "file": "invalid/unknown-port.yams",
+      "expect": "reject",
+      "rule": "connection-from-exists",
+      "stage": "structural",
+      "exercises": "A connection whose source node id does not appear in nodes. Parses as well-formed YAML; fails structural validation.",
+      "spec": "Connections"
+    },
+    {
+      "file": "invalid/duplicate-connection.yams",
+      "expect": "reject",
+      "rule": "connection-pair-unique",
+      "stage": "structural",
+      "exercises": "The same from/to pair declared twice with differing atten. Ambiguous by construction \u2014 the format does not define which wins.",
+      "spec": "Connections"
+    }
+  ]
+}

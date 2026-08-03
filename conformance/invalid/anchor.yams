@@ -1,0 +1,8 @@
+schema: yams/1
+
+nodes:
+  src: &anchor { type: passthrough }
+  dst: { type: passthrough }
+
+connections:
+  - { from: src.out, to: dst.in }

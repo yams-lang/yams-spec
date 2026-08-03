@@ -1,0 +1,9 @@
+schema: yams/1
+
+nodes:
+  a: { type: passthrough }
+  b: { type: passthrough }
+
+connections:
+  - { from: a.out, to: b.in, atten: 0.5 }
+  - { from: a.out, to: b.in, atten: 0.7 }

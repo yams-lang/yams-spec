@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: "YAMS — Yet Another Modular Syntax"
+message: "If you use this specification, please cite it as below."
+type: software
+abstract: >-
+  A YAML-based interchange format for modular dataflow graphs: named nodes
+  connected by wires, each wire carrying a time-varying value. The format
+  defines structure only — node types and their semantics come from a
+  domain-specific catalog — making one serialization serve audio synthesis,
+  control modulation, lighting, video routing, and signal-processing
+  pipelines alike.
+authors:
+  - given-names: Leon
+    family-names: Rothenberg
+    orcid: "https://orcid.org/0009-0001-3651-229X"
+version: "1.0.0"
+date-released: "2026-08-03"
+repository-code: "https://github.com/yams-lang/yams-spec"
+license: CC-BY-4.0
+keywords:
+  - dataflow
+  - node graph
+  - patch format
+  - interchange format
+  - YAML
+  - modular synthesis
+  - domain-specific language
