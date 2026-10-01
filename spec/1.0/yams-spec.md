@@ -429,11 +429,12 @@ Files without any `---` separator parse identically to before. `schema:` is requ
 
 ## Include
 
-The `include:` key takes one or more unqualified file names, without extension. Each name resolves to an external `.yams` file (or directory of files) whose definition documents are prepended to this file's own definitions before expansion.
+The `include:` key takes one or more names, without extension: a bare file name, or a relative path to one (see §Resolution). Each name resolves to an external `.yams` file (or directory of files) whose definition documents are prepended to this file's own definitions before expansion.
 
 ```yaml
 include: [ stdlib, my-lib ]   # multi-include sequence form
 include: stdlib                # single-include shorthand
+include: ../shared/drums       # a relative path: drums in a sibling directory
 ```
 
 Single-include shorthand and the 1-element sequence `[ stdlib ]` are equivalent — pick whichever reads better.
@@ -442,7 +443,11 @@ In a multi-document file, `include:` belongs in the file header alongside `schem
 
 ### Resolution
 
-Names are bare strings. A bare name `foo` resolves to one of, in order:
+A name is either a bare name (`foo`) or a relative path (`lib/foo`, `../shared/foo`): directory components separated by `/`, where `..` names the parent directory. A path resolves exactly as a bare name does, joined onto each search path in turn — so `../shared/foo`, searched from the including file's directory, is `foo` in that directory's sibling `shared/`. The last component is the name that the rules below match; its directory components only say where to look.
+
+A name MUST NOT be an absolute path (one beginning with `/`): a document that names a location on one machine cannot load on another. Separators are always `/`, whatever the host platform.
+
+A name `foo` (bare, or the last component of a path) resolves to one of, in order:
 
 1. A file `foo.yams` (canonical extension).
 2. A file with another loader-recognized extension. A host that gives its patches its own extension resolves that too.
