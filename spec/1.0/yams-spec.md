@@ -179,6 +179,8 @@ Readers MUST ignore unknown fields (forward-compatibility).
 - Both sides lists of equal length → zip-pair: element *i* of `from` wires to element *i* of `to`.
 - Both sides lists of unequal length → error naming both counts.
 
+Shape decides, not count: a one-entry list is a list. `{ from: [ a.out ], to: [ x.in, y.in ] }` is two lists of unequal length, an error; the fan-out is spelled `{ from: a.out, to: [ x.in, y.in ] }`.
+
 Optional fields (`atten`, `enabled`, …) replicate to every expanded connection. The compact form's value may also be a list (fan-out only).
 
 ```yaml
@@ -201,10 +203,10 @@ connections:
 
 Rules:
 
-- **Patterns are only legal in list position.** A scalar `from`/`to` (or compact-form endpoint) containing `*` is a parse error. Scalar position always means exactly one literal wire; anything that can fan is visibly a list. Expansion is a purely element-level rewrite inside the list — literals expand to themselves, patterns to their matches, results concatenate — so patterns and explicit entries mix freely: `[ src_*.out, gate.out ]`.
+- **Patterns are only legal in list position.** A scalar `from`/`to` (or compact-form endpoint) containing `*` is a parse error. Scalar position always means exactly one literal wire; anything that can fan is visibly a list. Against a scalar on the other side, expansion is a purely element-level rewrite inside the list — literals expand to themselves, patterns to their matches, results concatenate — so patterns and explicit entries mix freely: `{ from: [ src_*.out, gate.out ], to: sink.in }`.
 - **Node-id segment only.** The port segment is literal; `*` there is an error.
 - **Zero matches is an error.** A pattern that matches no exposing node fails loudly (naming any id-only matches), so a typo cannot become a silently dead wire.
-- **Zip with patterns:** list elements pair positionally first; a pattern element's expansion then zips against its partner's. Expansion-count mismatch is an error naming both patterns and both match lists.
+- **Zip with patterns:** list elements pair positionally first; a pattern element's expansion then zips against its partner's. Expansion-count mismatch is an error naming both patterns and both match lists. Because pairing comes first, a pattern stands in for exactly one entry of the other list: `{ from: [ src_*.out ], to: [ a.in, b.in ] }` is unequal lists (1 and 2), an error — never every match into every destination.
 - **Scope.** Patterns match the top-level node ids of their own document (main or definition). A compound-typed node matches when its surface — member-path reach-in plus any aliases (the two coexist) — exposes the port.
 - **Quoting.** A pattern beginning with `*` (`"*.reset"`) MUST be quoted — unquoted `*` is a YAML alias, forbidden by the restricted subset. Patterns beginning with a literal (`src_*.reset`) need no quotes; prefer them.
 

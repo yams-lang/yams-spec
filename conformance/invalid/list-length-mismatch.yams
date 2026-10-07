@@ -1,0 +1,10 @@
+schema: yams/1
+
+nodes:
+  src_a: { type: passthrough }
+  src_b: { type: passthrough }
+  x:     { type: passthrough }
+  y:     { type: passthrough }
+
+connections:
+  - { from: [ src_*.out ], to: [ x.in, y.in ] }

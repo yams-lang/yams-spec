@@ -59,6 +59,14 @@
       "stage": "structural",
       "exercises": "The same from/to pair declared twice with differing atten. Ambiguous by construction \u2014 the format does not define which wins.",
       "spec": "Connections"
+    },
+    {
+      "file": "invalid/list-length-mismatch.yams",
+      "expect": "reject",
+      "rule": "list-lengths-match",
+      "stage": "structural",
+      "exercises": "A one-entry pattern list against a two-entry list. A one-entry list is still a list, and list elements pair before patterns expand, so the lengths (1 and 2) must match. Treating the one-entry list as a scalar would wire every match into every destination.",
+      "spec": "Connections"
     }
   ]
 }
