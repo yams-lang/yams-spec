@@ -445,7 +445,7 @@ In a multi-document file, `include:` belongs in the file header alongside `schem
 
 ### Resolution
 
-A name is a bare name (`foo`), a relative path (`lib/foo`, `../shared/foo`), or an absolute path (`/Users/me/shared/foo`): directory components separated by `/`, where `..` names the parent directory. A path resolves exactly as a bare name does, joined onto each search path in turn — so `../shared/foo`, searched from the including file's directory, is `foo` in that directory's sibling `shared/`. The last component is the name that the rules below match; its directory components only say where to look.
+A name is a bare name (`foo`), a relative path (`lib/foo`, `../shared/foo`), or an absolute path (`/Users/me/shared/foo`): directory components separated by `/`, where `..` names the parent directory. A relative path resolves exactly as a bare name does, joined onto each search path in turn — so `../shared/foo`, searched from the including file's directory, is `foo` in that directory's sibling `shared/`. The last component is the name that the rules below match; its directory components only say where to look.
 
 An absolute name (one beginning with `/`) is used as written: it is not joined onto a search path, and it resolves the same way whatever the including file's location (or none — an unsaved document). A document that names an absolute path loads only where that path exists, so prefer a bare or relative name for anything you share. Separators are always `/`, whatever the host platform.
 
