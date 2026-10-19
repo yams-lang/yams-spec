@@ -431,7 +431,7 @@ Files without any `---` separator parse identically to before. `schema:` is requ
 
 ## Include
 
-The `include:` key takes one or more names, without extension: a bare file name, or a relative path to one (see §Resolution). Each name resolves to an external `.yams` file (or directory of files) whose definition documents are prepended to this file's own definitions before expansion.
+The `include:` key takes one or more names, without extension: a bare file name, a relative path to one, or an absolute path to one (see §Resolution). Each name resolves to an external `.yams` file (or directory of files) whose definition documents are prepended to this file's own definitions before expansion.
 
 ```yaml
 include: [ stdlib, my-lib ]   # multi-include sequence form
@@ -445,9 +445,9 @@ In a multi-document file, `include:` belongs in the file header alongside `schem
 
 ### Resolution
 
-A name is either a bare name (`foo`) or a relative path (`lib/foo`, `../shared/foo`): directory components separated by `/`, where `..` names the parent directory. A path resolves exactly as a bare name does, joined onto each search path in turn — so `../shared/foo`, searched from the including file's directory, is `foo` in that directory's sibling `shared/`. The last component is the name that the rules below match; its directory components only say where to look.
+A name is a bare name (`foo`), a relative path (`lib/foo`, `../shared/foo`), or an absolute path (`/Users/me/shared/foo`): directory components separated by `/`, where `..` names the parent directory. A path resolves exactly as a bare name does, joined onto each search path in turn — so `../shared/foo`, searched from the including file's directory, is `foo` in that directory's sibling `shared/`. The last component is the name that the rules below match; its directory components only say where to look.
 
-A name MUST NOT be an absolute path (one beginning with `/`): a document that names a location on one machine cannot load on another. Separators are always `/`, whatever the host platform.
+An absolute name (one beginning with `/`) is used as written: it is not joined onto a search path, and it resolves the same way whatever the including file's location (or none — an unsaved document). A document that names an absolute path loads only where that path exists, so prefer a bare or relative name for anything you share. Separators are always `/`, whatever the host platform.
 
 A name `foo` (bare, or the last component of a path) resolves to one of, in order:
 
